@@ -1,0 +1,116 @@
+/* Container Styling */
+.order-management-page {
+  padding: 20px;
+  background-color: #f8f9fa;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  max-width: 900px;
+  margin: 20px auto;
+  font-family: Arial, sans-serif;
+}
+
+/* Navigation Links */
+.navigation {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.navigation .admin-link {
+  text-decoration: none;
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.navigation .admin-link:hover {
+  background-color: #0056b3;
+}
+
+/* Header Styling */
+h1 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Search Input Styling */
+.order-search {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px 15px;
+  font-size: 1rem;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.order-search:hover {
+  border-color: #007bff;
+}
+
+.order-search:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+}
+
+.order-search::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+/* Table Styling */
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.order-table th,
+.order-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+.order-table th {
+  background-color: #007bff;
+  color: #fff;
+  font-weight: bold;
+}
+
+.order-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.order-table tr:hover {
+  background-color: #f1f1f1;
+  transition: background-color 0.3s ease;
+}
+
+/* Status Dropdown */
+.order-table select {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.order-table select:focus {
+  border-color: #007bff;
+}
+
+/* Action Column Styling */
+.order-table td select {
+  font-size: 0.9rem;
+}

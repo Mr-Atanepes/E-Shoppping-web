@@ -1,0 +1,91 @@
+.product-management-page { 
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.add-product-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.add-product-form input {
+  padding: 8px;
+}
+
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.product-table th,
+.product-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.product-table th {
+  background-color: #f2f2f2;
+}
+
+/* Button container */
+.button-container {
+  margin: 20px 0;
+  display: flex;
+  gap: 10px;
+}
+
+.button-container button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button-container button:hover {
+  background-color: #0056b3;
+}
+
+.button-container button:focus {
+  outline: none;
+}
+
+/* Table action buttons (Edit and Delete) */
+.product-table td button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  margin-right: 10px; /* Adds space between the Edit and Delete buttons */
+}
+
+.product-table button.edit-btn {
+  background-color: #28a745;
+  color: white;
+}
+
+.product-table button.edit-btn:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+}
+
+.product-table button.delete-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.product-table button.delete-btn:hover {
+  background-color: #c82333;
+  transform: translateY(-2px);
+}
+
+.product-table button:focus {
+  outline: none;
+}

@@ -1,0 +1,29 @@
+/* public/styles.css */
+
+/* Define CSS variables for colors */
+:root {
+  --main-bg-color: #f4f4f4;
+  --main-text-color: #333;
+  --primary-color: #007bff;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--main-bg-color);
+  color: var(--main-text-color);
+  padding: 20px;
+}
+
+h1 {
+  color: var(--primary-color);
+}
+
+/* Media queries for responsive design */
+@media (max-width: 768px) {
+  body {
+    padding: 10px; /* Adjust padding for smaller screens */
+  }
+  h1 {
+    font-size: 1.5em; /* Adjust heading size for smaller screens */
+  }
+}

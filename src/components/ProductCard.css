@@ -1,0 +1,82 @@
+/* Product Card */
+.product-card {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 15px;
+  text-align: center;
+  transition: box-shadow 0.3s ease;
+  background-color: white;
+}
+
+.product-card:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.product-card img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+.product-card h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.product-card p {
+  font-weight: bold;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.product-card .btn {
+  display: inline-block;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.product-card .btn:hover {
+  background-color: #0056b3;
+}
+
+.product-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.product-actions button {
+  padding: 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.product-actions button:hover {
+  background-color: #218838;
+}
+
+/* Favorite Button */
+.add-fav-btn {
+  background-color: #FFD700;
+}
+
+.remove-fav-btn {
+  background-color: #FF6347;
+}
+
+.add-fav-btn:hover {
+  background-color: #FFC107;
+}
+
+.remove-fav-btn:hover {
+  background-color: #FF4500;
+}

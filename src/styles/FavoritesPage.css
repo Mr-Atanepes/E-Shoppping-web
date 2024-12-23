@@ -1,0 +1,59 @@
+.favorites-page {
+  padding: 20px;
+  background-color: #f8f9fa;
+}
+
+.favorites-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.empty-state {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.favorites-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.favorite-item {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 15px;
+  margin: 10px;
+  width: calc(33% - 20px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.favorite-item-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.favorite-item-details {
+  text-align: center;
+}
+
+.remove-favorite-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.remove-favorite-button:hover {
+  background-color: #c82333;
+}

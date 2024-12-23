@@ -1,0 +1,16 @@
+"so when server runs for front end there are in headers icons, when you click each icon it must route data init even with input form e.t.c doesnt matter like page shoudl show but when i click icon  with classname user-link its not showing after get clicked  "
+
+
+
+
+
+Compiled with problems:
+×
+ERROR in ./src/components/Header.jsx 11:0-42
+Module not found: Error: Can't resolve '../Authentication/Auth' in 'C:\Users\atane\OneDrive\Desktop\Ecommeerce\src\components'
+ERROR
+[eslint] 
+src\App.jsx
+  Line 40:68:  'Login' is not defined  react/jsx-no-undef
+
+Search for the keywords to learn more about each error.
