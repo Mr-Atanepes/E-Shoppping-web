@@ -59,7 +59,3 @@ const protectAdminRoute = async (req, res, next) => {
 };
 
 export { authenticate, protectAdminRoute };
-
-
-
-export default authenticate;

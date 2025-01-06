@@ -38,20 +38,8 @@ export const login = async (req, res) => {
     }
 
     // Generate JWT token
-    const token = jwt.sign(
-      { id: user._id, email: user.email, username: user.username },
-      process.env.jwt_secret_key,
-      { expiresIn: '1h' }
-    );
-    res.status(200).json({
-      message: 'Login successful',
-      token,
-      user: {
-        id: user._id,
-        email: user.email,
-        username: user.username,
-      },
-    });
+    const token = generateToken(user._id);
+    res.status(200).json({ token });
   } catch (error) {
     console.error('Login error:', error.message);
     res.status(500).json({ message: 'Server error during login' });
@@ -208,5 +196,3 @@ export const signup = async (req, res) => {
     res.status(500).json({ message: 'Server error during signup' });
   }
 };
-
-

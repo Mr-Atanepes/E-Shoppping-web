@@ -101,6 +101,8 @@ export const addProduct = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Error adding product", error });
   }
+  res.status(201).json({ message: 'Product added successfully', newProduct });
+
 };
 
 // Delete Product function
@@ -136,25 +138,5 @@ export const updateProduct = async (req, res) => {
   }
 };
 
-// Function to handle adding items to the cart
-export const addToCart = async (req, res) => {
-  const { productId, quantity } = req.body;
-
-  try {
-    // Validate product existence
-    const product = await Product.findById(productId);
-    if (!product) {
-      return res.status(404).json({ message: 'Product not found' });
-    }
-
-    // Add item to cart logic (this could vary based on your cart implementation)
-    const cartItem = { productId, quantity };
-    await Cart.addItem(cartItem); // Assuming addItem is a method in your Cart model
-
-    return res.status(200).json({ message: 'Item added to cart successfully' });
-  } catch (error) {
-    return res.status(500).json({ message: 'Error adding item to cart', error });
-  }
-};
 
 // Export all functions

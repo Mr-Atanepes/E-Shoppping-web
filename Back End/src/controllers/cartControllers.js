@@ -2,24 +2,40 @@
 import Cart from "../models/cartModel.js"; // Import the Cart model
 import Product from "../models/productModel.js"; // Import the Product model
 // Delete product from cart
+// Delete product from cart
 export const deleteCartItem = async (req, res) => {
-  const { productId } = req.params;
-  const userId = req.user?.id;
+  const { productId } = req.params;  // get the productId from URL params
+  const userId = req.user?.id;       // get the userId from request
 
   if (!userId) {
     return res.status(401).json({ message: "Unauthorized access" });
   }
 
   try {
-    const cart = await Cart.findOne({ userId });
+    const cart = await Cart.findOne({ userId }); // Find the user's cart
+
     if (!cart) {
       return res.status(404).json({ message: "Cart not found" });
     }
 
-    // Filter out the item to be deleted
-    cart.items = cart.items.filter((item) => item.productId !== productId);
-    await cart.save();
-    res.status(200).json(cart); // Return updated cart
+    // Filter out the item to be deleted by its productId
+    const itemExists = cart.items.some(item => item.productId.toString() === productId);
+    if (!itemExists) {
+      return res.status(404).json({ message: "Product not found in cart" });
+    }
+
+    // Remove the item from the cart
+    cart.items = cart.items.filter((item) => item.productId.toString() !== productId);
+
+    // Recalculate the total price after removal
+    cart.totalPrice = cart.items.reduce(
+      (total, item) => total + item.productId.price * item.quantity,
+      0
+    );
+
+    await cart.save();  // Save the updated cart
+
+    res.status(200).json(cart);  // Return the updated cart
   } catch (error) {
     console.error("Error deleting product from cart:", error.message);
     res.status(500).json({ message: "Error deleting product from cart", error });
@@ -74,9 +90,13 @@ export const getCart = async (req, res) => {
       "items.productId",
       "name price" // Fetch only necessary fields
     );
-    if (!cart) {
-      return res.status(404).json({ message: "Cart not found" });
+
+    if (!cart || cart.items.length === 0) {
+      return res.status(200).json({ message: "Cart is empty" });
     }
+
+    // Calculate the total price for the cart based on the items in it
+    cart.totalPrice = cart.items.reduce((total, item) => total + item.productId.price * item.quantity, 0);
 
     res.status(200).json(cart);
   } catch (error) {
@@ -84,6 +104,7 @@ export const getCart = async (req, res) => {
     res.status(500).json({ message: "Error retrieving cart", error });
   }
 };
+
 // Add item to cart
 // Function to handle adding items to the cart
 export const addToCart = async (req, res) => {
@@ -125,3 +146,23 @@ export const addToCart = async (req, res) => {
     return res.status(500).json({ message: 'Error adding item to cart', error });
   }
 };
+// Function to handle adding items to the cart
+// export const addToCart = async (req, res) => {
+//   const { productId, quantity } = req.body;
+
+//   try {
+//     // Validate product existence
+//     const product = await Product.findById(productId);
+//     if (!product) {
+//       return res.status(404).json({ message: 'Product not found' });
+//     }
+
+//     // Add item to cart logic (this could vary based on your cart implementation)
+//     const cartItem = { productId, quantity };
+//     await Cart.addItem(cartItem); // Assuming addItem is a method in your Cart model
+
+//     return res.status(200).json({ message: 'Item added to cart successfully' });
+//   } catch (error) {
+//     return res.status(500).json({ message: 'Error adding item to cart', error });
+//   }
+// };
