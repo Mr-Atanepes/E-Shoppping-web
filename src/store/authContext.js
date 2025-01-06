@@ -12,11 +12,12 @@ export const AuthProvider = ({ children }) => {
         return userData ? JSON.parse(userData) : null;
     });
 
-    const login = (userData) => {
+    const login = (userData, token) => {
         setIsAuthenticated(true);
-        setUser(userData); // Example: { id: 1, name: 'John Doe', role: 'admin' }
+        setUser(userData);
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('user', JSON.stringify(userData));
+        localStorage.setItem('token', token); // Store token for future use
     };
 
     const logout = () => {
@@ -24,6 +25,7 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
         localStorage.removeItem('isAuthenticated');
         localStorage.removeItem('user');
+        localStorage.removeItem('token');
     };
 
     return (

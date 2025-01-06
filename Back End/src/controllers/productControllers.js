@@ -1,5 +1,4 @@
-import Product from "../models/Product.js"; // Assuming the Product model is in this path
-
+import Product from "../models/productModel.js"; // Correct
 // 1. Create a new product
 export const createProduct = async (req, res) => {
   try {
@@ -105,3 +104,4 @@ export const searchProducts = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+// Araf 150

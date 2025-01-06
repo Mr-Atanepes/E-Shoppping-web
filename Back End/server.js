@@ -5,38 +5,30 @@ import mongoose from "mongoose";
 import session from "express-session";
 import authRoutes from "./src/routes/authRoutes.js";
 import adminRoutes from "./src/routes/adminRoutes.js";
-import orderRoutes from "./src/routes/orderRoutes.js"; // Import order routes
+import orderRoutes from "./src/routes/orderRoutes.js";
+import productRoutes from "./src/routes/productRoutes.js";
+import cartRoutes from "./src/routes/cartRoutes.js";
+import authToken from "./src/middlewares/authMiddleware.js";
+import { authenticate, protectAdminRoute } from "../Back End/src/middlewares/authMiddleware.js";
 import Cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
+
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3003;
 
-// Middleware setup
-app.use(Cors({ origin: "http://localhost:3001", credentials: true }));
+app.use(Cors());
+
+// Configure middleware
 app.use(helmet());
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static("public"));
-
-// Configure session
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET || "defaultSecret",
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: process.env.NODE_ENV === "production",
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24, // 1 day
-    },
-  })
-);
 
 // Database connection using Mongoose
 mongoose
@@ -46,8 +38,18 @@ mongoose
 
 // Routes setup
 app.use("/api/auth", authRoutes);
-app.use("/api/admin", adminRoutes);
-app.use("/api/orders", orderRoutes); // Add orderRoutes here
+app.use("/api/admin", protectAdminRoute, adminRoutes); // Protect admin routes
+app.use("/api/orders", authenticate, orderRoutes); // Protect user order routes
+app.use("/api/products", productRoutes); // Public product routes
+app.use("/api/cart", authenticate, cartRoutes); // Example route
+
+// Protected route (authentication required)
+app.use(authToken);
+
+app.get("/protected", (req, res) => {
+  res.json({ message: "This is protected data.", user: req.user });
+});
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -60,3 +62,30 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
+
+
+
+
+
+
+
+// /////////
+
+// Middleware to parse cookies
+app.use(cookieParser());
+
+// Middleware for session management
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "defaultSecret", // Use a secure secret in production
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
+// Public route (no authentication required)
+app.get("/public", (req, res) => {
+  res.send("This is a public route.");
+});
+

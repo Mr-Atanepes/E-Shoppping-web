@@ -16,12 +16,12 @@ router.get("/", getAllProducts);
 router.get("/search", searchProducts); // New search route
 
 // Route to create a new product, now handles image upload
-router.post("/add", createProduct);
+router.post("/", createProduct);
 
 // Route to delete a product by ID
-router.delete("/delete/:id", deleteProduct);
+router.delete("/:id", deleteProduct);
 
 // Route to update a product by ID, now handles image upload
-router.put("/update/:id", updateProduct);
+router.put("/:id", updateProduct);
 
 export default router;

@@ -5,88 +5,58 @@ import ProductCard from '../components/ProductCard';
 import { CartContext } from '../store/CartContext';
 import { useFavorites } from '../store/FavoritesContext'; // Correctly import the custom hook
 
-
-
-
 function ProductsPage() {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
-  const [imageUrl, setImageUrl] = useState('');
   const { addToCart } = useContext(CartContext);  // Using CartContext to add items to the cart
   const { favorites, addFavorite, removeFavorite } = useFavorites(); // Use the custom hook to access favorites
 
   // Fetch products from API
-  useEffect(() => {
-    const getProducts = async () => {
-      try {
-        const data = await fetchProducts();
-        setProducts(data);
-      } catch (error) {
-        setError(error);
-      }
-    };
-    getProducts();
-  }, []);
-
-  // Handle image upload (for the admin or a feature allowing image uploads)
-  const handleImageUpload = async (event) => {
-    const formData = new FormData();
-    formData.append('image', event.target.files[0]);
-
+  const getProducts = async () => {
     try {
-      const response = await fetch('http://localhost:5000/upload', {
-        method: 'POST',
-        body: formData,
-      });
-      const result = await response.json();
-      setImageUrl(result.filePath); // Assuming backend sends image URL
+      const data = await fetchProducts();
+      setProducts(data);
     } catch (error) {
-      console.error('Error uploading file:', error);
+      setError('Failed to fetch products. Please try again later.');
     }
   };
 
+  useEffect(() => {
+    getProducts(); // Initial fetch
+
+    const interval = setInterval(() => {
+      getProducts(); // Fetch every 5 seconds
+    }, 5000); // Adjust the interval as needed
+
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, []);
+
+  useEffect(() => {
+    refreshUserProducts(); // Call the function when the component mounts
+  }, []);
+
   // Handle adding product to cart
   const handleAddToCart = (product) => {
-    addToCart(product);  // This will now allow the same product to be added multiple times
+    addToCart(product);
   };
-
+  const refreshUserProducts = async () => {
+    try {
+        const data = await fetchProducts(); // Fetch updated products
+        setProducts(data); // Update state with new products
+    } catch (error) {
+        setError('Failed to refresh products. Please try again later.');
+    }
+};
   return (
-    <div className="products-page">
-      <h1>Our Products</h1>
-
-      {/* Image Upload Section (Optional, could be part of admin functionality) */}
-      <div className="upload-section">
-        <h3>Upload Product Image</h3>
-        <input type="file" onChange={handleImageUpload} />
-        {imageUrl && <img src={`http://localhost:5000${imageUrl}`} alt="Uploaded" />}
-      </div>
-
-      {/* Error Handling */}
-      {error && <div>Error fetching products: {error.message}</div>}
-
-      {/* Display Products */}
-      <div className="product-grid">
-        <table>
-          <thead>
-            <tr>
-              <th>Product surname</th>
-              <th>Descriptions</th>
-              <th>Price</th>
-              <th>Ratings</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map(product => (
-              <tr key={product.id}>
-                <td>{product.name}</td>
-                <td>{product.description}</td>
-                <td>{product.price}</td>
-                <td>{product.rating}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+    <div className="products-container">
+      {error && <p>{error}</p>} {/* Display error if any */}
+      {products.length > 0 ? (
+        products.map(product => (
+          <ProductCard key={product._id} product={product} addToCart={handleAddToCart} />
+        ))
+      ) : (
+        <p>No products available.</p>
+      )}
     </div>
   );
 }

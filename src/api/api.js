@@ -17,7 +17,7 @@ const getHeaders = () => {
 // Fetch products
 export const fetchProducts = async () => {
   try {
-    const response = await fetch('http://localhost:3003/products', {
+    const response = await fetch('http://localhost:3003/api/products', {
       headers: getHeaders(),
     });
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -28,6 +28,52 @@ export const fetchProducts = async () => {
   }
 };
 
+// Create a new product
+export const createProduct = async (productData) => {
+  try {
+    const response = await fetch('http://localhost:3003/api/products', {
+      method: 'POST',
+      headers: getHeaders(),
+      body: JSON.stringify(productData),
+    });
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    return await response.json();
+  } catch (error) {
+    console.error('Error creating product:', error.message);
+    throw error;
+  }
+};
+
+// Update a product by ID
+export const updateProduct = async (id, productData) => {
+  try {
+    const response = await fetch(`http://localhost:3003/api/products/${id}`, {
+      method: 'PUT',
+      headers: getHeaders(),
+      body: JSON.stringify(productData),
+    });
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    return await response.json();
+  } catch (error) {
+    console.error(`Error updating product with ID ${id}:`, error.message);
+    throw error;
+  }
+};
+
+// Delete a product by ID
+export const deleteProduct = async (id) => {
+  try {
+    const response = await fetch(`http://localhost:3003/api/products/${id}`, {
+      method: 'DELETE',
+      headers: getHeaders(),
+    });
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    return await response.json();
+  } catch (error) {
+    console.error(`Error deleting product with ID ${id}:`, error.message);
+    throw error;
+  }
+};
 // Fetch product by ID
 export const fetchProductById = async (id) => {
   try {
@@ -45,7 +91,7 @@ export const fetchProductById = async (id) => {
 // Register user API
 export const registerUser = async (userData) => {
   try {
-    const response = await fetch('http://localhost:3003/register', {
+    const response = await fetch('http://localhost:3003/api/auth/signup', {
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify(userData),
@@ -61,7 +107,7 @@ export const registerUser = async (userData) => {
 // Login user API
 export const loginUser = async (userData) => {
   try {
-    const response = await fetch('http://localhost:3003/login', {
+    const response = await fetch('http://localhost:3003/api/auth/login', {
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify(userData),
@@ -79,7 +125,7 @@ export const loginUser = async (userData) => {
 // Reset password API
 export const sendResetEmail = async (email) => {
   try {
-    const response = await fetch('http://localhost:3003/reset-password', {
+    const response = await fetch('http://localhost:3003/aapi/auth/reset-password', {
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify({ email }),
@@ -99,4 +145,7 @@ export default {
   registerUser,
   loginUser,
   sendResetEmail,
+  createProduct,
+  updateProduct,
+  deleteProduct,
 };

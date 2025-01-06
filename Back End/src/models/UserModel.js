@@ -1,32 +1,50 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs'; // Ensure bcrypt is imported
+import bcrypt from 'bcrypt';
+import validator from 'validator';
+const { isEmail } = validator;
 
 const userSchema = new mongoose.Schema(
   {
-    username: { type: String, required: true, unique: true, maxlength: 50 }, // Set maximum length
-    password: { type: String, required: true, minlength: 6, maxlength: 128 }, // Add length validation
-    email: { type: String, required: true, unique: true, maxlength: 100 }, // New email field
-    isAdmin: { type: Boolean, default: false }, // Add isAdmin field to identify admin users
-    products: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Product",
-      },
-    ],
-    resetPasswordToken: { type: String }, // Add this field to store reset password token
-    resetPasswordExpires: { type: Date }, // Add expiration for the reset token
+    username: { type: String, required: true, unique: true, maxlength: 50 },
+    password: { type: String, required: true, minlength: 6, maxlength: 128 },
+    email: { 
+      type: String, 
+      required: true, 
+      unique: true, 
+      maxlength: 100,
+      validate: {
+        validator: (email) => isEmail(email),
+        message: 'Please enter a valid email format',
+      }
+    },
+    isAdmin: { type: Boolean, default: false },
   },
-  { timestamps: true } // Add timestamps
+  { timestamps: true }
 );
 
-// Hash password before saving (ensure `this` references the correct document)
+// Password hashing before saving user
 userSchema.pre("save", async function (next) {
   if (this.isModified("password")) {
     const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt); // Hash the password
+    this.password = await bcrypt.hash(this.password, salt);
   }
   next();
 });
+
+// Add login method for user verification
+userSchema.statics.login = async function (username, password) {
+  const user = await this.findOne({ username });
+  if (!user) {
+    throw new Error('Incorrect username');
+  }
+  
+  const auth = await bcrypt.compare(password, user.password);
+  if (!auth) {
+    throw new Error('Invalid password');
+  }
+  
+  return user; // Return the user object if credentials are valid
+};
 
 const User = mongoose.model("User", userSchema);
 

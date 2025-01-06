@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useCart } from '../store/CartContext'; // Importing the useCart hook
 import '../styles/HomePage.css';
-import Footer from '../components/Footer';
+// import Footer from '../components/Footer';
 import ProductModal from '../components/ProductModal';
-import { Star, ShoppingCart, Heart } from 'lucide-react';
+import { Star,  Heart } from 'lucide-react';
 import { useFavorites } from '../store/FavoritesContext'; // Updated import statement
 
 function HomePage() {
@@ -82,10 +82,8 @@ function HomePage() {
                   </div>
                   <p className="product-price">${product.price.toFixed(2)}</p>
                   <div className="product-actions">
-                    <button className="add-to-cart-button" onClick={() => handleAddToCart(product)}>
-                      <ShoppingCart size={16} />
-                      Add to Cart
-                    </button>
+                   
+                    <button onClick={() => handleAddToCart(product)}>Add to cart</button>
                     <button 
                       className={`favorite-button ${favorites.includes(product.id) ? 'favorited' : ''}`}
                       onClick={() => toggleFavorite(product.id)} // Pass product.id to toggleFavorite
@@ -105,3 +103,4 @@ function HomePage() {
 }
 
 export default HomePage;
+{/* <button onClick={() => handleFavoriteClick(product)}>Favorite</button> */}

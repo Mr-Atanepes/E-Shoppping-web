@@ -7,26 +7,29 @@ import jwt from "jsonwebtoken";
 
 // Auth middleware to verify JWT token and handle sessions
 const authToken = (req, res, next) => {
-  const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
-
-  if (!token) {
-    return res.status(401).json({ message: "Access denied: Token missing" });
-  }
-
   try {
-    const verified = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = verified;
+    // 1. Extract token from cookies or Authorization header
+    const token = req.cookies?.token || req.headers.authorization?.split(" ")[1];
 
-    // Initialize session if not present (express-session should handle this)
+    if (!token) {
+      return res.status(401).json({ message: "Access denied: Token missing" });
+    }
+
+    // 2. Verify token and decode payload
+    const verified = jwt.verify(token, process.env.jwt_secret_key);
+    req.user = verified; // Attach user info to the request object
+
+    // 3. Check or initialize session
     if (!req.session) {
-      req.session = {};
+      req.session = {}; // Ensure the session exists
     }
 
     req.session.user = {
       id: verified.id,
-      email: verified.email, // Assuming email is part of the token payload
+      email: verified.email, // Assuming email exists in the token payload
     };
 
+    // 4. Proceed to the next middleware or route handler
     next();
   } catch (error) {
     if (error.name === "TokenExpiredError") {
@@ -36,7 +39,7 @@ const authToken = (req, res, next) => {
     }
 
     console.error("JWT Verification Error:", error.message);
-    res.status(403).json({ message: "Invalid token, access denied" });
+    return res.status(403).json({ message: "Invalid token, access denied" });
   }
 };
 

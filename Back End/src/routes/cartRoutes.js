@@ -1,10 +1,6 @@
 import express from "express";
-import {
-  addToCart,
-  deleteCartItem, // Correctly importing the delete method
-  updateCartItem,
-  getCart,
-} from "../controllers/cartControllers.js";
+import { addToCart, deleteCartItem, updateCartItem, getCart } from "../controllers/cartControllers.js";
+// Correctly importing the delete method 
 
 const router = express.Router();
 
