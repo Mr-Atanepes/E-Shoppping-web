@@ -38,7 +38,7 @@ mongoose
 
 // Routes setup
 app.use("/api/auth", authRoutes);
-app.use("/api/admin", protectAdminRoute, adminRoutes); // Protect admin routes
+app.use("/api/admin",  adminRoutes); // Protect admin routes
 app.use("/api/orders", authenticate, orderRoutes); // Protect user order routes
 app.use("/api/products", productRoutes); // Public product routes
 app.use("/api/cart", authenticate, cartRoutes); // Example route

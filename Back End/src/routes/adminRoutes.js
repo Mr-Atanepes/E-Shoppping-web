@@ -8,7 +8,7 @@ const router = express.Router();
 router.post('/signup', adminSignUp);
 
 // Admin Login route
-router.post('/login', adminLogin);
+router.post('/login' ,adminLogin);
 
 // Admin Dashboard route (protected, requires admin authentication)
 router.get('/dashboard', protectAdminRoute, getAdminDashboard);

@@ -38,7 +38,7 @@ const protectAdminRoute = async (req, res, next) => {
     const token = authHeader.replace('Bearer ', '');
 
     // Verify the token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.jwt_secret_key);
 
     // Check if the user exists in the database and is an admin
     const admin = await User.findById(decoded.id);
